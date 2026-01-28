@@ -1,0 +1,212 @@
+<!-- noticias.html | Regenera — Notícias -->
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Regenera | Notícias</title>
+  <meta name="description" content="Notícias, comunicados e atualizações da Plataforma Regenera por território." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="https://SEU-DOMINIO-AQUI/noticias.html" />
+
+  <!-- OG -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Regenera | Notícias" />
+  <meta property="og:description" content="Notícias e comunicados por território. Fique por dentro das atualizações." />
+  <meta property="og:url" content="https://SEU-DOMINIO-AQUI/noticias.html" />
+  <meta property="og:image" content="https://SEU-DOMINIO-AQUI/assets/img/og-regenera.png" />
+  <meta property="og:locale" content="pt_BR" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Regenera | Notícias" />
+  <meta name="twitter:description" content="Notícias e comunicados por território." />
+  <meta name="twitter:image" content="https://SEU-DOMINIO-AQUI/assets/img/og-regenera.png" />
+
+  <!-- Perf -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind (PROD build) -->
+  <link rel="stylesheet" href="./assets/css/tailwind.min.css" />
+  <link rel="stylesheet" href="./assets/css/app.css" />
+
+  <!-- Icons -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- JSON-LD: CollectionPage -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"CollectionPage",
+    "name":"Notícias — Regenera",
+    "url":"https://SEU-DOMINIO-AQUI/noticias.html",
+    "isPartOf":{"@type":"WebSite","name":"Regenera","url":"https://SEU-DOMINIO-AQUI/"},
+    "inLanguage":"pt-BR",
+    "description":"Notícias, comunicados e atualizações da Plataforma Regenera por território."
+  }
+  </script>
+
+  <!-- Firebase (compat) -->
+  <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <!-- Seu config central -->
+  <script defer src="./assets/js/firebase-config.js"></script>
+
+  <!-- App -->
+  <script type="module" defer src="./assets/js/app-noticias.js"></script>
+</head>
+
+<body class="bg-zinc-950 font-sans">
+  <noscript>
+    <div class="p-4 text-center text-sm bg-amber-200 text-zinc-900">
+      Para usar a plataforma, ative o JavaScript.
+    </div>
+  </noscript>
+
+  <div id="bg" class="eco-bg">
+
+    <!-- Topbar -->
+    <header class="sticky top-0 z-40 border-b border-white/10 bg-zinc-950/55 backdrop-blur"
+            style="border-color: var(--glassBorder); background: color-mix(in oklab, var(--bgTop) 55%, transparent);">
+      <div class="mx-auto max-w-7xl px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <a href="index.html" class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-2xl border grid place-items-center shadow-soft"
+               style="background: color-mix(in oklab, var(--g1) 45%, transparent); border-color: var(--glassBorder);">
+            <i class="fa-solid fa-recycle" style="color: color-mix(in oklab, var(--text) 75%, #22c55e);"></i>
+          </div>
+          <div>
+            <h1 class="text-lg font-black tracking-tight">Regenera</h1>
+            <p class="text-xs" style="color: var(--muted);">Notícias</p>
+          </div>
+        </a>
+
+        <div class="flex items-center gap-2 w-full md:w-auto">
+          <a href="eventos.html" class="hidden md:inline-flex px-3 py-2 rounded-xl glass hover:opacity-95 transition">
+            <i class="fa-solid fa-calendar-days mr-2" style="color: color-mix(in oklab, #f59e0b 70%, var(--text));"></i>Eventos
+          </a>
+
+          <button id="btnTheme" class="shrink-0 px-3 py-2 rounded-xl glass hover:opacity-95 transition" title="Alternar tema">
+            <i id="themeIcon" class="fa-solid fa-moon mr-2"></i><span id="themeText">Dark</span>
+          </button>
+
+          <a id="btnLogin" href="login.html"
+             class="shrink-0 px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-400 via-cyan-400 to-amber-300 text-zinc-950 font-extrabold shadow-glow transition hover:opacity-95">
+            <i class="fa-solid fa-right-to-bracket mr-2"></i>Entrar
+          </a>
+          <button id="btnLogout" class="hidden shrink-0 px-3 py-2 rounded-xl glass hover:opacity-95 transition">
+            <i class="fa-solid fa-right-from-bracket mr-2"></i>Sair
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-4 py-6 space-y-6">
+      <!-- Header -->
+      <section class="rounded-[2rem] glass-strong border shadow-soft overflow-hidden reveal"
+               style="border-color: var(--glassBorder);">
+        <div class="p-6 md:p-8 grid lg:grid-cols-12 gap-5 items-center">
+          <div class="lg:col-span-7 space-y-2">
+            <p class="text-xs" style="color: var(--muted);">Comunicação</p>
+            <h2 class="text-2xl md:text-4xl font-black tracking-tight">Notícias e comunicados</h2>
+            <p class="text-sm md:text-base" style="color: var(--muted);">
+              Atualizações do projeto, avisos por território e comunicados institucionais.
+            </p>
+          </div>
+          <div class="lg:col-span-5">
+            <div class="rounded-[1.5rem] glass border p-4" style="border-color: var(--glassBorder);">
+              <div class="flex flex-col md:flex-row gap-2">
+                <div class="flex-1">
+                  <label class="text-xs font-semibold" style="color: var(--muted);">Buscar</label>
+                  <input id="q" type="search"
+                         class="w-full px-4 py-3 rounded-2xl glass border outline-none"
+                         style="border-color: var(--glassBorder);"
+                         placeholder="Título ou conteúdo (client-side)"
+                         autocomplete="off" />
+                </div>
+                <div class="w-full md:w-44">
+                  <label class="text-xs font-semibold" style="color: var(--muted);">Território</label>
+                  <select id="territorio"
+                          class="w-full px-4 py-3 rounded-2xl glass border outline-none"
+                          style="border-color: var(--glassBorder);">
+                    <option value="all">Todos</option>
+                  </select>
+                </div>
+                <div class="w-full md:w-44">
+                  <label class="text-xs font-semibold" style="color: var(--muted);">Tipo</label>
+                  <select id="tipo"
+                          class="w-full px-4 py-3 rounded-2xl glass border outline-none"
+                          style="border-color: var(--glassBorder);">
+                    <option value="all">Todos</option>
+                    <option value="noticia">Notícia</option>
+                    <option value="aviso">Aviso</option>
+                    <option value="comunicado">Comunicado</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mt-3 flex items-center justify-between gap-2">
+                <div class="text-xs" style="color: var(--muted);">
+                  <span id="count">—</span>
+                </div>
+                <div class="flex gap-2">
+                  <button id="btnClear" class="px-3 py-2 rounded-xl glass border hover:opacity-95 transition"
+                          style="border-color: var(--glassBorder);">
+                    Limpar
+                  </button>
+                  <button id="btnReload" class="px-3 py-2 rounded-xl glass border hover:opacity-95 transition"
+                          style="border-color: var(--glassBorder);">
+                    Atualizar
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- List -->
+      <section class="space-y-3">
+        <div id="skeleton" class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-[2rem] glass-strong border p-5 shine" style="border-color: var(--glassBorder); height: 150px;"></div>
+          <div class="rounded-[2rem] glass-strong border p-5 shine" style="border-color: var(--glassBorder); height: 150px;"></div>
+        </div>
+
+        <div id="empty" class="hidden rounded-[2rem] glass-strong border p-8 text-center reveal"
+             style="border-color: var(--glassBorder);">
+          <i class="fa-solid fa-newspaper text-2xl"></i>
+          <p class="mt-2 font-black text-lg">Nada por aqui ainda</p>
+          <p class="text-sm mt-1" style="color: var(--muted);">Quando tiver novidades, elas aparecem aqui.</p>
+        </div>
+
+        <div id="list" class="grid md:grid-cols-2 gap-4"></div>
+
+        <!-- Pagination -->
+        <div class="flex items-center justify-between pt-2">
+          <button id="btnPrev" class="px-4 py-2 rounded-2xl glass border hover:opacity-95 transition disabled:opacity-40"
+                  style="border-color: var(--glassBorder);" disabled>
+            <i class="fa-solid fa-arrow-left mr-2"></i>Anterior
+          </button>
+          <div class="text-xs" style="color: var(--muted);">
+            Página <span id="page">1</span>
+          </div>
+          <button id="btnNext" class="px-4 py-2 rounded-2xl glass border hover:opacity-95 transition disabled:opacity-40"
+                  style="border-color: var(--glassBorder);" disabled>
+            Próxima<i class="fa-solid fa-arrow-right ml-2"></i>
+          </button>
+        </div>
+      </section>
+
+      <footer class="pb-10 pt-2 text-center text-xs" style="color: var(--muted);">
+        © Regenera • Comunicação e transparência
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
