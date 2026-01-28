@@ -1,4 +1,4 @@
-<!-- index.html | Regenera — HUB (menu circular NEU) + SEO + performance -->
+<!-- index.html | Regenera — HUB -->
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth" data-theme="dark">
 <head>
@@ -7,38 +7,37 @@
 
   <title>Regenera | HUB</title>
   <meta name="description" content="Plataforma Regenera — coletas, trilhas, documentos, notícias, eventos e serviços." />
-
-  <!-- SEO -->
   <meta name="robots" content="index,follow,max-image-preview:large" />
-  <link rel="canonical" href="https://SEU-DOMINIO-AQUI/index.html" />
+  <link rel="canonical" href="https://SEU-DOMINIO-AQUI/" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Regenera | HUB" />
   <meta property="og:description" content="Coletas, trilhas, documentos, notícias, eventos e serviços para gerar impacto no território." />
   <meta property="og:url" content="https://SEU-DOMINIO-AQUI/" />
-  <meta property="og:image" content="https://SEU-DOMINIO-AQUI/og-regenera.png" />
+  <meta property="og:image" content="https://SEU-DOMINIO-AQUI/assets/img/og-regenera.png" />
   <meta property="og:locale" content="pt_BR" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Regenera | HUB" />
   <meta name="twitter:description" content="Coletas, trilhas, documentos, notícias, eventos e serviços." />
-  <meta name="twitter:image" content="https://SEU-DOMINIO-AQUI/og-regenera.png" />
+  <meta name="twitter:image" content="https://SEU-DOMINIO-AQUI/assets/img/og-regenera.png" />
 
   <!-- Performance hints -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
 
-  <!-- Font (swap = não bloqueia render) -->
+  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
 
-  <!-- ✅ Tailwind (PROD) - gere um CSS único e leve -->
-  <link rel="stylesheet" href="./assets/tailwind.min.css" />
-
-  <!-- Icons (melhor trocar por SVG no futuro; por ora mantém) -->
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- ✅ Tailwind (PROD) - gere um CSS minificado -->
+  <link rel="stylesheet" href="./assets/css/tailwind.min.css" />
+  <link rel="stylesheet" href="./assets/css/app.css" />
 
   <!-- JSON-LD (SEO estruturado) -->
   <script type="application/ld+json">
@@ -58,146 +57,22 @@
     "@type":"Organization",
     "name":"Regenera",
     "url":"https://SEU-DOMINIO-AQUI/",
-    "logo":"https://SEU-DOMINIO-AQUI/logo-regenera.png",
+    "logo":"https://SEU-DOMINIO-AQUI/assets/img/logo-regenera.png",
     "sameAs":[]
   }
   </script>
 
-  <style>
-    /* ===== Theme variables (dark default) ===== */
-    :root{
-      --bgTop: rgba(9,9,11,1);
-      --bgMid: rgba(7,10,12,1);
-      --text: rgba(244,244,245,1);
-      --muted: rgba(228,228,231,.7);
-      --glass: rgba(255,255,255,.07);
-      --glassBorder: rgba(255,255,255,.12);
-      --panel: rgba(0,0,0,.32);
-      --panelBorder: rgba(255,255,255,.12);
-
-      --g1: rgba(34,197,94,.22);
-      --g2: rgba(6,182,212,.18);
-      --g3: rgba(245,158,11,.14);
-      --g4: rgba(132,204,22,.12);
-      --g5: rgba(59,130,246,.10);
-    }
-    html[data-theme="light"]{
-      --bgTop: rgba(248,250,252,1);
-      --bgMid: rgba(241,245,249,1);
-      --text: rgba(15,23,42,1);
-      --muted: rgba(30,41,59,.75);
-      --glass: rgba(255,255,255,.65);
-      --glassBorder: rgba(15,23,42,.10);
-      --panel: rgba(255,255,255,.80);
-      --panelBorder: rgba(15,23,42,.10);
-
-      --g1: rgba(34,197,94,.18);
-      --g2: rgba(6,182,212,.14);
-      --g3: rgba(245,158,11,.12);
-      --g4: rgba(132,204,22,.10);
-      --g5: rgba(59,130,246,.08);
-    }
-
-    body{ color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-
-    /* ===== Background + spotlight ===== */
-    .eco-bg{
-      background:
-        radial-gradient(900px circle at var(--x, 45%) var(--y, 35%), var(--g1), transparent 35%),
-        radial-gradient(750px circle at calc(var(--x, 45%) + 25%) calc(var(--y, 35%) + 20%), var(--g2), transparent 38%),
-        radial-gradient(620px circle at calc(var(--x, 45%) - 18%) calc(var(--y, 35%) + 26%), var(--g3), transparent 40%),
-        radial-gradient(900px circle at 20% 80%, var(--g4), transparent 45%),
-        radial-gradient(900px circle at 85% 75%, var(--g5), transparent 45%),
-        linear-gradient(180deg, var(--bgTop) 0%, var(--bgMid) 60%, var(--bgTop) 100%);
-      min-height: 100vh;
-    }
-
-    .glass { background: var(--glass); border: 1px solid var(--glassBorder); backdrop-filter: blur(12px); }
-    .glass-strong { background: var(--panel); border: 1px solid var(--panelBorder); backdrop-filter: blur(14px); }
-
-    /* ===== Motion (respeita reduce motion) ===== */
-    @media (prefers-reduced-motion: reduce){
-      * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-    }
-    @keyframes floaty { 0%,100%{ transform: translateY(0px);} 50%{ transform: translateY(-8px);} }
-    @keyframes slideUp { from{ opacity:0; transform: translateY(14px);} to{ opacity:1; transform: translateY(0);} }
-    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-    .floaty { animation: floaty 6.5s ease-in-out infinite; }
-    .reveal { opacity: 0; transform: translateY(14px); }
-    .reveal.on { animation: slideUp .7s ease-out forwards; }
-    .shine { background: linear-gradient(90deg, rgba(255,255,255,.12), rgba(255,255,255,.24), rgba(255,255,255,.12));
-      background-size: 200% 100%; animation: shimmer 1.6s infinite linear; }
-
-    .imgCard{
-      background:
-        radial-gradient(500px circle at 20% 30%, rgba(34,197,94,.18), transparent 45%),
-        radial-gradient(420px circle at 80% 30%, rgba(6,182,212,.14), transparent 48%),
-        radial-gradient(380px circle at 45% 85%, rgba(245,158,11,.12), transparent 50%),
-        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-    }
-    html[data-theme="light"] .imgCard{
-      background:
-        radial-gradient(520px circle at 20% 30%, rgba(34,197,94,.16), transparent 45%),
-        radial-gradient(440px circle at 80% 30%, rgba(6,182,212,.12), transparent 48%),
-        radial-gradient(390px circle at 45% 85%, rgba(245,158,11,.10), transparent 50%),
-        linear-gradient(180deg, rgba(15,23,42,.04), rgba(15,23,42,.01));
-    }
-
-    .clamp3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    .locked { opacity:.55; filter:saturate(.7); cursor:not-allowed; }
-
-    /* ===== Circular menu (NEU PRO) ===== */
-    .circleWrap{ width: 360px; height: 360px; position: relative; border-radius: 3rem; transform: translateZ(0); }
-    @media (min-width: 768px){ .circleWrap{ width: 440px; height: 440px; } }
-
-    .centerBtn{
-      position:absolute; inset:0; margin:auto;
-      width: 140px; height:140px; border-radius: 40px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.18);
-    }
-    .centerBtn::after{
-      content:""; position:absolute; inset:-10px; border-radius: 44px;
-      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.25), transparent 55%);
-      opacity:.55; pointer-events:none;
-    }
-    .centerPulse{ animation: centerPulse 2.6s ease-in-out infinite; }
-    @keyframes centerPulse{ 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.03); } }
-
-    .node{
-      position:absolute; width: 104px; height: 104px; border-radius: 34px;
-      transform: translate(-50%,-50%);
-      transition: transform .22s ease, box-shadow .22s ease, opacity .22s ease, filter .22s ease;
-      box-shadow: 0 18px 55px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.16);
-      will-change: transform;
-    }
-    .node i{ font-size: 22px; }
-    .node:hover{
-      transform: translate(-50%,-50%) scale(1.07);
-      box-shadow: 0 25px 80px rgba(0,0,0,.40), 0 0 0 1px rgba(255,255,255,.14), inset 0 1px 0 rgba(255,255,255,.22);
-    }
-
-    .ringGlow{
-      box-shadow: 0 0 0 1px rgba(255,255,255,.10), 0 30px 120px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.10);
-    }
-
-    .orbit{ animation: orbit 14s linear infinite; }
-    @keyframes orbit{ 0%{ transform: rotate(0deg);} 100%{ transform: rotate(360deg);} }
-    .orbit .nodeInner{ transform: rotate(calc(var(--orbitAngle) * -1deg)); }
-
-    select, option{ color: var(--text); }
-    select{ background-color: color-mix(in oklab, var(--panel) 92%, transparent); }
-  </style>
-
-  <!-- Firebase (compat) - DEFER para não bloquear render -->
+  <!-- Firebase (compat) - defer -->
   <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-  <!-- App (defer) -->
-  <script defer src="./assets/app-index.js"></script>
+  <!-- Config + app -->
+  <script defer src="./assets/js/firebase-config.js"></script>
+  <script type="module" defer src="./assets/js/app-index.js"></script>
 </head>
 
-<body class="bg-zinc-950">
+<body class="bg-zinc-950 font-sans">
   <noscript>
     <div class="p-4 text-center text-sm bg-amber-200 text-zinc-900">
       Para usar a plataforma, ative o JavaScript.
@@ -205,13 +80,14 @@
   </noscript>
 
   <div id="bg" class="eco-bg">
+
     <!-- Topbar -->
     <header class="sticky top-0 z-40 border-b border-white/10 bg-zinc-950/55 backdrop-blur"
-      style="border-color: var(--glassBorder); background: color-mix(in oklab, var(--bgTop) 55%, transparent);">
+            style="border-color: var(--glassBorder); background: color-mix(in oklab, var(--bgTop) 55%, transparent);">
       <div class="mx-auto max-w-7xl px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div class="flex items-center gap-3">
-          <div class="h-10 w-10 rounded-2xl border grid place-items-center"
-            style="background: color-mix(in oklab, var(--g1) 45%, transparent); border-color: var(--glassBorder);">
+          <div class="h-10 w-10 rounded-2xl border grid place-items-center shadow-soft"
+               style="background: color-mix(in oklab, var(--g1) 45%, transparent); border-color: var(--glassBorder);">
             <i class="fa-solid fa-recycle" style="color: color-mix(in oklab, var(--text) 75%, #22c55e);"></i>
           </div>
           <div>
@@ -228,16 +104,19 @@
             <i class="fa-solid fa-calendar-days mr-2" style="color: color-mix(in oklab, #f59e0b 70%, var(--text));"></i>Eventos
           </a>
 
+          <!-- Theme toggle -->
           <button id="btnTheme" class="shrink-0 px-3 py-2 rounded-xl glass hover:opacity-95 transition" title="Alternar tema">
             <i id="themeIcon" class="fa-solid fa-moon mr-2"></i><span id="themeText">Dark</span>
           </button>
 
-          <a id="btnLogin" href="login.html"
-            class="shrink-0 px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-400 via-cyan-400 to-amber-300 text-zinc-950 font-extrabold shadow-glow transition hover:opacity-95">
+          <!-- Auth actions (Entrar / Sair) -->
+          <a id="btnLogin"
+             href="login.html"
+             class="shrink-0 px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-400 via-cyan-400 to-amber-300 text-zinc-950 font-extrabold shadow-glow transition hover:opacity-95">
             <i class="fa-solid fa-right-to-bracket mr-2"></i>Entrar
           </a>
-
-          <button id="btnLogout" class="hidden shrink-0 px-3 py-2 rounded-xl glass hover:opacity-95 transition">
+          <button id="btnLogout"
+             class="hidden shrink-0 px-3 py-2 rounded-xl glass hover:opacity-95 transition">
             <i class="fa-solid fa-right-from-bracket mr-2"></i>Sair
           </button>
         </div>
@@ -245,9 +124,11 @@
     </header>
 
     <main class="mx-auto max-w-7xl px-4 py-6 space-y-8">
-      <!-- Card do usuário logado -->
+
+      <!-- ✅ Card do usuário logado + cadeados -->
       <section id="userCardWrap" class="hidden reveal">
-        <div class="rounded-[2rem] glass-strong border shadow-soft overflow-hidden" style="border-color: var(--glassBorder);">
+        <div class="rounded-[2rem] glass-strong border shadow-soft overflow-hidden"
+             style="border-color: var(--glassBorder);">
           <div class="p-5 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div class="flex items-center gap-3">
               <img id="ucAvatar" class="h-12 w-12 rounded-2xl border border-white/10 object-cover" alt="Avatar" loading="lazy"/>
@@ -260,19 +141,21 @@
 
             <div class="flex flex-wrap gap-2">
               <a id="btnGoAdmin" href="dashboard-admin.html"
-                class="px-4 py-2 rounded-2xl glass border hover:opacity-95 transition" style="border-color: var(--glassBorder);">
+                 class="px-4 py-2 rounded-2xl glass border hover:opacity-95 transition"
+                 style="border-color: var(--glassBorder);">
                 <i class="fa-solid fa-user-shield mr-2"></i>Painel Admin
                 <span id="lockAdmin" class="ml-1"><i class="fa-solid fa-lock"></i></span>
               </a>
 
               <a id="btnGoServices" href="servicos-tecnico.html"
-                class="px-4 py-2 rounded-2xl glass border hover:opacity-95 transition" style="border-color: var(--glassBorder);">
+                 class="px-4 py-2 rounded-2xl glass border hover:opacity-95 transition"
+                 style="border-color: var(--glassBorder);">
                 <i class="fa-solid fa-screwdriver-wrench mr-2"></i>Serviços
                 <span id="lockServices" class="ml-1"><i class="fa-solid fa-lock"></i></span>
               </a>
 
               <a id="btnGoUser" href="dashboard-users.html"
-                class="px-4 py-2 rounded-2xl bg-gradient-to-r from-emerald-400 via-cyan-400 to-amber-300 text-zinc-950 font-extrabold shadow-glow hover:opacity-95 transition">
+                 class="px-4 py-2 rounded-2xl bg-gradient-to-r from-emerald-400 via-cyan-400 to-amber-300 text-zinc-950 font-extrabold shadow-glow hover:opacity-95 transition">
                 <i class="fa-solid fa-user mr-2"></i>Meu painel
               </a>
             </div>
@@ -282,9 +165,240 @@
         </div>
       </section>
 
-      <!-- HERO + Circular Menu (igual seu conceito) -->
-      <!-- (Mantive praticamente igual; a lógica JS foi pro app-index.js) -->
-      <!-- ... você pode colar aqui o mesmo bloco HERO + menu circular do seu index atual ... -->
+      <!-- HERO + Circular Menu -->
+      <section class="rounded-[2rem] glass-strong shadow-soft overflow-hidden reveal">
+        <div class="p-6 md:p-8 grid lg:grid-cols-12 gap-6 items-center">
+          <div class="lg:col-span-7 space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-2xl glass">
+              <span class="h-2 w-2 rounded-full bg-emerald-300"></span>
+              <span class="text-xs" style="color: var(--muted);">
+                Plataforma integrada para educação, gestão e impacto
+              </span>
+            </div>
+
+            <h2 class="text-3xl md:text-5xl font-black tracking-tight leading-[1.05]">
+              Transformando
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-cyan-300 to-amber-200">
+                resíduos
+              </span>
+              em
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-lime-300 via-emerald-300 to-cyan-200">
+                valor
+              </span>
+              social e ambiental.
+            </h2>
+
+            <div class="relative rounded-[1.6rem] glass p-4 overflow-hidden">
+              <div class="absolute inset-0 shine opacity-35"></div>
+              <p class="relative text-sm md:text-base clamp3" style="color: var(--muted);">
+                O Regenera organiza trilhas de conhecimento, centraliza documentos, comunica eventos e notícias,
+                e estrutura a operação de coletas e serviços — gerando indicadores claros (estilo Power BI)
+                para apoiar decisões e ampliar o impacto no território.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-3 md:gap-4 pt-2">
+              <a id="linkColetasHero" href="coletas-view.html"
+                 class="px-4 py-2.5 rounded-2xl glass hover:opacity-95 transition border"
+                 style="border-color: var(--glassBorder);">
+                <i class="fa-solid fa-chart-column mr-2" style="color: color-mix(in oklab, #06b6d4 70%, var(--text));"></i>Coletas
+              </a>
+
+              <a href="trilhas.html"
+                 class="px-4 py-2.5 rounded-2xl glass hover:opacity-95 transition border"
+                 style="border-color: var(--glassBorder);">
+                <i class="fa-solid fa-route mr-2" style="color: color-mix(in oklab, #84cc16 70%, var(--text));"></i>Trilhas
+              </a>
+
+              <a href="documentos.html"
+                 class="px-4 py-2.5 rounded-2xl glass hover:opacity-95 transition border"
+                 style="border-color: var(--glassBorder);">
+                <i class="fa-solid fa-folder-open mr-2" style="color: color-mix(in oklab, #f59e0b 70%, var(--text));"></i>Documentos
+              </a>
+
+              <a href="servicos-tecnico.html" data-requires="tech"
+                 class="px-4 py-2.5 rounded-2xl glass hover:opacity-95 transition border"
+                 style="border-color: var(--glassBorder);">
+                <i class="fa-solid fa-screwdriver-wrench mr-2" style="color: color-mix(in oklab, #06b6d4 70%, var(--text));"></i>Serviços
+                <span data-lock class="ml-1"><i class="fa-solid fa-lock"></i></span>
+              </a>
+
+              <a href="dashboard-admin.html" data-requires="admin"
+                 class="px-4 py-2.5 rounded-2xl glass hover:opacity-95 transition border"
+                 style="border-color: var(--glassBorder);">
+                <i class="fa-solid fa-user-shield mr-2" style="color: color-mix(in oklab, #f59e0b 70%, var(--text));"></i>Admin
+                <span data-lock class="ml-1"><i class="fa-solid fa-lock"></i></span>
+              </a>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 flex items-center justify-center">
+            <div class="circleWrap ringGlow rounded-[3rem] glass-strong border border-white/10 floaty"
+                 style="border-color: var(--glassBorder);">
+
+              <!-- center -->
+              <a id="centerLogin" href="login.html"
+                 class="centerBtn centerPulse grid place-items-center bg-gradient-to-r from-emerald-400 via-cyan-400 to-amber-300 text-zinc-950 font-extrabold shadow-glow transition hover:opacity-95"
+                 title="Entrar">
+                <div class="text-center">
+                  <i class="fa-solid fa-leaf text-2xl"></i>
+                  <p class="mt-1 text-sm">Entrar</p>
+                </div>
+              </a>
+
+              <div id="orbitLayer" class="absolute inset-0 orbit">
+
+                <a id="linkColetasNode"
+                   class="node glass hover:opacity-95 transition border grid place-items-center"
+                   style="left: 50%; top: 3%; border-color: var(--glassBorder);"
+                   href="coletas-view.html" title="Coletas">
+                  <div class="nodeInner text-center" style="--orbitAngle:0;">
+                    <i class="fa-solid fa-chart-column" style="color: color-mix(in oklab, #06b6d4 75%, var(--text));"></i>
+                    <p class="mt-1 text-[11px] font-semibold" style="color: var(--muted);">Coletas</p>
+                  </div>
+                </a>
+
+                <a class="node glass hover:opacity-95 transition border grid place-items-center"
+                   style="left: 91%; top: 25%; border-color: var(--glassBorder);"
+                   href="trilhas.html" title="Trilhas">
+                  <div class="nodeInner text-center" style="--orbitAngle:45;">
+                    <i class="fa-solid fa-route" style="color: color-mix(in oklab, #84cc16 75%, var(--text));"></i>
+                    <p class="mt-1 text-[11px] font-semibold" style="color: var(--muted);">Trilhas</p>
+                  </div>
+                </a>
+
+                <a class="node glass hover:opacity-95 transition border grid place-items-center"
+                   style="left: 91%; top: 75%; border-color: var(--glassBorder);"
+                   href="documentos.html" title="Documentos & Downloads">
+                  <div class="nodeInner text-center" style="--orbitAngle:120;">
+                    <i class="fa-solid fa-folder-open" style="color: color-mix(in oklab, #f59e0b 75%, var(--text));"></i>
+                    <p class="mt-1 text-[11px] font-semibold" style="color: var(--muted);">Docs</p>
+                  </div>
+                </a>
+
+                <a class="node glass hover:opacity-95 transition border grid place-items-center"
+                   style="left: 50%; top: 97%; border-color: var(--glassBorder);"
+                   href="noticias.html" title="Notícias">
+                  <div class="nodeInner text-center" style="--orbitAngle:180;">
+                    <i class="fa-solid fa-newspaper" style="color: color-mix(in oklab, #06b6d4 75%, var(--text));"></i>
+                    <p class="mt-1 text-[11px] font-semibold" style="color: var(--muted);">Notícias</p>
+                  </div>
+                </a>
+
+                <a class="node glass hover:opacity-95 transition border grid place-items-center"
+                   style="left: 9%; top: 75%; border-color: var(--glassBorder);"
+                   href="eventos.html" title="Eventos">
+                  <div class="nodeInner text-center" style="--orbitAngle:240;">
+                    <i class="fa-solid fa-calendar-days" style="color: color-mix(in oklab, #f59e0b 75%, var(--text));"></i>
+                    <p class="mt-1 text-[11px] font-semibold" style="color: var(--muted);">Eventos</p>
+                  </div>
+                </a>
+
+                <a class="node glass hover:opacity-95 transition border grid place-items-center"
+                   style="left: 9%; top: 25%; border-color: var(--glassBorder);"
+                   href="servicos-tecnico.html" data-requires="tech" title="Serviços (Técnico)">
+                  <div class="nodeInner text-center" style="--orbitAngle:300;">
+                    <i class="fa-solid fa-screwdriver-wrench" style="color: color-mix(in oklab, #06b6d4 75%, var(--text));"></i>
+                    <p class="mt-1 text-[11px] font-semibold" style="color: var(--muted);">Serviços</p>
+                    <span data-lock class="text-[11px] mt-0.5 inline-flex items-center gap-1" style="color: var(--muted);">
+                      <i class="fa-solid fa-lock"></i>
+                    </span>
+                  </div>
+                </a>
+
+                <a class="node glass hover:opacity-95 transition border grid place-items-center"
+                   style="left: 97%; top: 50%; border-color: var(--glassBorder);"
+                   href="dashboard-admin.html" data-requires="admin" title="Admin (Kanban)">
+                  <div class="nodeInner text-center" style="--orbitAngle:90;">
+                    <i class="fa-solid fa-user-shield" style="color: color-mix(in oklab, #f59e0b 75%, var(--text));"></i>
+                    <p class="mt-1 text-[11px] font-semibold" style="color: var(--muted);">Admin</p>
+                    <span data-lock class="text-[11px] mt-0.5 inline-flex items-center gap-1" style="color: var(--muted);">
+                      <i class="fa-solid fa-lock"></i>
+                    </span>
+                  </div>
+                </a>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Apresentação / conteúdo -->
+      <section class="rounded-[2rem] glass-strong border shadow-soft overflow-hidden reveal"
+               style="border-color: var(--glassBorder);">
+        <div class="p-6 md:p-8 grid lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-7">
+            <p class="text-xs" style="color: var(--muted);">Apresentação</p>
+            <h3 class="text-2xl md:text-3xl font-black mt-1">O Regenera em 30 segundos</h3>
+            <p class="mt-2 text-sm md:text-base" style="color: var(--muted);">
+              Um HUB que integra educação (trilhas), comunicação (notícias/eventos), gestão (admin tipo Pipefy),
+              e operação (coletas e serviços) — com indicadores e relatórios para tomada de decisão.
+            </p>
+            <div class="mt-4 grid sm:grid-cols-3 gap-3">
+              <div class="rounded-[1.5rem] glass p-4 border" style="border-color: var(--glassBorder);">
+                <div class="h-10 w-10 rounded-2xl grid place-items-center border"
+                     style="border-color: var(--glassBorder); background: color-mix(in oklab, var(--g1) 45%, transparent);">
+                  <i class="fa-solid fa-people-group"></i>
+                </div>
+                <p class="mt-2 font-black">Comunidade</p>
+                <p class="text-sm mt-1 clamp3" style="color: var(--muted);">Acesso a conteúdos, comunicados e eventos.</p>
+              </div>
+              <div class="rounded-[1.5rem] glass p-4 border" style="border-color: var(--glassBorder);">
+                <div class="h-10 w-10 rounded-2xl grid place-items-center border"
+                     style="border-color: var(--glassBorder); background: color-mix(in oklab, var(--g2) 45%, transparent);">
+                  <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <p class="mt-2 font-black">Indicadores</p>
+                <p class="text-sm mt-1 clamp3" style="color: var(--muted);">Dashboards estilo Power BI.</p>
+              </div>
+              <div class="rounded-[1.5rem] glass p-4 border" style="border-color: var(--glassBorder);">
+                <div class="h-10 w-10 rounded-2xl grid place-items-center border"
+                     style="border-color: var(--glassBorder); background: color-mix(in oklab, var(--g3) 45%, transparent);">
+                  <i class="fa-solid fa-screwdriver-wrench"></i>
+                </div>
+                <p class="mt-2 font-black">Operação</p>
+                <p class="text-sm mt-1 clamp3" style="color: var(--muted);">Coletas e serviços com evidências.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5">
+            <div class="rounded-[1.8rem] imgCard glass-strong border p-5 h-full"
+                 style="border-color: var(--glassBorder);">
+              <p class="text-xs" style="color: var(--muted);">Impactos (resumo)</p>
+              <div class="mt-3 space-y-3">
+                <div class="flex items-center justify-between rounded-2xl glass p-3 border" style="border-color: var(--glassBorder);">
+                  <span class="text-sm font-semibold">Educação</span>
+                  <span class="text-xs" style="color: var(--muted);">trilhas + materiais</span>
+                </div>
+                <div class="flex items-center justify-between rounded-2xl glass p-3 border" style="border-color: var(--glassBorder);">
+                  <span class="text-sm font-semibold">Transparência</span>
+                  <span class="text-xs" style="color: var(--muted);">notícias + docs</span>
+                </div>
+                <div class="flex items-center justify-between rounded-2xl glass p-3 border" style="border-color: var(--glassBorder);">
+                  <span class="text-sm font-semibold">Governança</span>
+                  <span class="text-xs" style="color: var(--muted);">kanban + perfis</span>
+                </div>
+                <div class="flex items-center justify-between rounded-2xl glass p-3 border" style="border-color: var(--glassBorder);">
+                  <span class="text-sm font-semibold">Ambiental</span>
+                  <span class="text-xs" style="color: var(--muted);">coletas + indicadores</span>
+                </div>
+              </div>
+
+              <div class="mt-4 flex gap-2">
+                <a href="noticias.html" class="flex-1 text-center px-4 py-2 rounded-2xl glass border hover:opacity-95 transition"
+                   style="border-color: var(--glassBorder);">Ver notícias</a>
+
+                <a id="linkColetasCTA" href="coletas-view.html"
+                   class="flex-1 text-center px-4 py-2 rounded-2xl bg-gradient-to-r from-emerald-400 via-cyan-400 to-amber-300 text-zinc-950 font-extrabold shadow-glow hover:opacity-95 transition">
+                  Ver coletas
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <footer class="pb-10 pt-2 text-center text-xs" style="color: var(--muted);">
         © Regenera • Plataforma institucional e educacional
