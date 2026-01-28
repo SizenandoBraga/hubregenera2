@@ -4,7 +4,9 @@ import { applyThemeInit, initReveal, esc } from "./shared.js";
 applyThemeInit();
 initReveal();
 
-// Spotlight leve
+/* ===============================
+   Spotlight leve
+================================ */
 const bg = document.getElementById("bg");
 let raf = null;
 window.addEventListener("mousemove", (e) => {
@@ -18,12 +20,16 @@ window.addEventListener("mousemove", (e) => {
   });
 }, { passive: true });
 
-// Firebase
+/* ===============================
+   Firebase
+================================ */
 const fb = window.initFirebaseCompat?.();
 const auth = fb?.auth;
 const db   = fb?.db;
 
-// Topbar auth UI (simples)
+/* ===============================
+   Topbar auth
+================================ */
 const btnLogin  = document.getElementById("btnLogin");
 const btnLogout = document.getElementById("btnLogout");
 
@@ -67,7 +73,7 @@ const elPage = document.getElementById("page");
 const COL = "noticias";
 const PAGE_SIZE = 8;
 
-let allDocs = [];          // cache client-side (para busca)
+let allDocs = [];
 let filtered = [];
 let page = 1;
 let territOptionsLoaded = false;
@@ -75,7 +81,7 @@ let territOptionsLoaded = false;
 /* ===============================
    Helpers
 ================================ */
-function fmtDate(ts){
+function fmtDate(ts) {
   try {
     const d = ts?.toDate ? ts.toDate() : (ts ? new Date(ts) : null);
     if (!d || isNaN(d.getTime())) return "—";
@@ -83,7 +89,7 @@ function fmtDate(ts){
   } catch { return "—"; }
 }
 
-function pill(text, tone="muted"){
+function pill(text, tone="muted") {
   const map = {
     noticia: "bg-cyan-400/10 border-cyan-300/20 text-cyan-100",
     aviso: "bg-amber-300/10 border-amber-200/20 text-amber-100",
@@ -94,15 +100,11 @@ function pill(text, tone="muted"){
   return `<span class="text-[11px] px-2 py-1 rounded-xl border ${cls}">${esc(text)}</span>`;
 }
 
-function showSkeleton(show){
-  elSkel?.classList.toggle("hidden", !show);
-}
-
+function showSkeleton(show){ elSkel?.classList.toggle("hidden", !show); }
 function setEmpty(show){
   elEmpty?.classList.toggle("hidden", !show);
   if (show) elEmpty?.classList.add("on");
 }
-
 function setCount(n){
   if (!elCount) return;
   elCount.textContent = n === 1 ? "1 item" : `${n} itens`;
@@ -118,9 +120,8 @@ function renderCard(item){
   const territorio = item.territorio || "Geral";
   const title = item.titulo || "Sem título";
   const body = item.conteudo || item.resumo || "";
-  const href = item.link || ""; // opcional
-
-  const cover = item.capaUrl || ""; // opcional
+  const href = item.link || "";
+  const cover = item.capaUrl || "";
 
   return `
   <article class="rounded-[2rem] glass-strong border shadow-soft overflow-hidden reveal"
@@ -193,7 +194,7 @@ function wireOpenButtons(){
 }
 
 /* ===============================
-   Filtering + pagination
+   Filters + pagination
 ================================ */
 function applyFilters(){
   const q = (elQ?.value || "").trim().toLowerCase();
@@ -201,6 +202,7 @@ function applyFilters(){
   const tipo = elTipo?.value || "all";
 
   filtered = allDocs.filter((d) => {
+    // se existir status, só publica
     if (d.status && d.status !== "publicado") return false;
 
     if (terr !== "all" && String(d.territorio || "Geral") !== terr) return false;
@@ -223,42 +225,39 @@ function pageSlice(){
 }
 
 function render(){
+  if (!elList) return;
   elList.innerHTML = "";
 
   setCount(filtered.length);
-
-  const slice = pageSlice();
   setEmpty(filtered.length === 0);
 
-  // pagination
   const maxPage = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  elPage.textContent = String(page);
-  btnPrev.disabled = page <= 1;
-  btnNext.disabled = page >= maxPage;
+  if (elPage) elPage.textContent = String(page);
+  if (btnPrev) btnPrev.disabled = page <= 1;
+  if (btnNext) btnNext.disabled = page >= maxPage;
 
-  slice.forEach((item) => {
+  pageSlice().forEach((item) => {
     elList.insertAdjacentHTML("beforeend", renderCard(item));
   });
 
-  // ativar reveal em cards recém renderizados
   document.querySelectorAll(".reveal").forEach((el) => el.classList.add("on"));
   wireOpenButtons();
 }
 
 /* ===============================
-   Load data
+   Load
 ================================ */
 async function loadTerritorioOptionsFromDocs(docs){
-  if (territOptionsLoaded) return;
+  if (territOptionsLoaded || !elTerr) return;
 
   const set = new Set();
   docs.forEach(d => set.add(String(d.territorio || "Geral")));
   const arr = Array.from(set).sort((a,b) => a.localeCompare(b));
 
-  // limpar e recriar (mantém "Todos")
   const keepFirst = elTerr.querySelector('option[value="all"]');
   elTerr.innerHTML = "";
-  elTerr.appendChild(keepFirst);
+  if (keepFirst) elTerr.appendChild(keepFirst);
+
   arr.forEach(t => {
     const opt = document.createElement("option");
     opt.value = t;
@@ -273,7 +272,7 @@ async function loadNoticias(){
   if (!db) {
     showSkeleton(false);
     setEmpty(true);
-    elCount.textContent = "Firebase não inicializou.";
+    if (elCount) elCount.textContent = "Firebase não inicializou.";
     return;
   }
 
@@ -281,8 +280,6 @@ async function loadNoticias(){
   setEmpty(false);
 
   try {
-    // Leve e rápido: pega somente as mais recentes (ajuste para crescer)
-    // Use publishedAt para ordenar; fallback createdAt
     const snap = await db.collection(COL)
       .orderBy("publishedAt", "desc")
       .limit(60)
@@ -292,16 +289,15 @@ async function loadNoticias(){
 
     await loadTerritorioOptionsFromDocs(allDocs);
 
-    // default filters
     filtered = allDocs.filter(d => !d.status || d.status === "publicado");
     page = 1;
 
     render();
   } catch (e) {
     console.error(e);
-    elList.innerHTML = "";
+    if (elList) elList.innerHTML = "";
     setEmpty(true);
-    elCount.textContent = "Erro ao carregar notícias.";
+    if (elCount) elCount.textContent = "Erro ao carregar notícias.";
   } finally {
     showSkeleton(false);
   }
@@ -311,9 +307,9 @@ async function loadNoticias(){
    Events
 ================================ */
 btnClear?.addEventListener("click", () => {
-  elQ.value = "";
-  elTerr.value = "all";
-  elTipo.value = "all";
+  if (elQ) elQ.value = "";
+  if (elTerr) elTerr.value = "all";
+  if (elTipo) elTipo.value = "all";
   applyFilters();
 });
 

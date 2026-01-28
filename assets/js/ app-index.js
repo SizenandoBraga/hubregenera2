@@ -1,14 +1,20 @@
 // assets/js/app-index.js
-import { applyThemeInit, initReveal, applyLocksToMenu, setLocked, esc } from "./shared.js";
+import {
+  applyThemeInit,
+  initReveal,
+  applyLocksToMenu,
+  setLocked,
+  esc
+} from "./shared.js";
 
 /* ===============================
-   Init UI básica
+   Init UI
 ================================ */
 applyThemeInit();
 initReveal();
 
 /* ===============================
-   Spotlight (leve, com throttle)
+   Spotlight (leve)
 ================================ */
 const bg = document.getElementById("bg");
 let raf = null;
@@ -32,7 +38,7 @@ const auth = fb?.auth;
 const db   = fb?.db;
 
 /* ===============================
-   Auth buttons
+   Auth UI
 ================================ */
 const btnLogin  = document.getElementById("btnLogin");
 const btnLogout = document.getElementById("btnLogout");
@@ -64,29 +70,30 @@ function badge(text, tone = "user") {
     user:  "bg-white/10 border-white/10 text-zinc-200/80",
     warn:  "bg-amber-300/10 border-amber-200/20 text-amber-100"
   };
-  return `<span class="text-[11px] px-2 py-1 rounded-xl border ${map[tone] || map.user}">${esc(text)}</span>`;
+  const cls = map[tone] || map.user;
+  return `<span class="text-[11px] px-2 py-1 rounded-xl border ${cls}">${esc(text)}</span>`;
 }
 
-async function getRole(uid){
+async function getRole(uid) {
   let isAdmin = false, isTech = false;
 
   try {
     const a = await db.collection(ADM_COL).doc(uid).get();
-    isAdmin = a.exists && a.data()?.active === true;
+    isAdmin = a.exists && (a.data()?.active === true);
   } catch {}
 
   try {
     const t = await db.collection(TECH_COL).doc(uid).get();
-    isTech = t.exists && t.data()?.active === true;
+    isTech = t.exists && (t.data()?.active === true);
   } catch {}
 
   return { isAdmin, isTech };
 }
 
-async function getUserCard(uid){
+async function getUserCard(uid) {
   try {
     const q = await db.collection(CARDS_COL).where("uid","==",uid).limit(1).get();
-    if (!q.empty) return q.docs[0].data();
+    if (!q.empty) return { id: q.docs[0].id, data: q.docs[0].data() || {} };
   } catch {}
   return null;
 }
@@ -94,68 +101,77 @@ async function getUserCard(uid){
 /* ===============================
    Coletas (admin x user)
 ================================ */
-function setColetasLinks(isAdmin){
+function setColetasLinks(isAdmin) {
   const href = isAdmin ? "coletas.html" : "coletas-view.html";
-  ["linkColetasHero","linkColetasNode","linkColetasCTA"].forEach(id => {
+  ["linkColetasHero","linkColetasNode","linkColetasCTA"].forEach((id) => {
     const el = document.getElementById(id);
     if (el) el.setAttribute("href", href);
   });
 }
 
 /* ===============================
-   User card
+   User card + locks
 ================================ */
-async function showUserCard(user){
+async function showUserCard(u) {
   const wrap = document.getElementById("userCardWrap");
   if (!wrap) return;
 
-  const { isAdmin, isTech } = await getRole(user.uid);
-  const card = await getUserCard(user.uid);
+  const { isAdmin, isTech } = await getRole(u.uid);
+  const card = await getUserCard(u.uid);
 
+  // coletas link (admin/user)
   setColetasLinks(isAdmin);
 
-  const displayName = card?.nome || user.displayName || "Usuário";
-  const email = user.email || card?.email || "—";
-  const avatar =
-    user.photoURL ||
-    `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(displayName)}`;
+  const displayName = (card?.data?.nome) || u.displayName || "Usuário";
+  const email = u.email || (card?.data?.email) || "—";
+  const photo = u.photoURL || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(displayName)}`;
 
-  document.getElementById("ucName").textContent = displayName;
-  document.getElementById("ucEmail").textContent = email;
-  document.getElementById("ucAvatar").src = avatar;
+  const ucName = document.getElementById("ucName");
+  const ucEmail = document.getElementById("ucEmail");
+  const ucAvatar = document.getElementById("ucAvatar");
+  if (ucName) ucName.textContent = displayName;
+  if (ucEmail) ucEmail.textContent = email;
+  if (ucAvatar) ucAvatar.src = photo;
 
   const badges = [];
   if (isAdmin) badges.push(badge("Admin", "admin"));
-  if (isTech)  badges.push(badge("Técnico", "tech"));
+  if (isTech) badges.push(badge("Técnico", "tech"));
   if (!isAdmin && !isTech) badges.push(badge("Usuário", "user"));
-  if (card?.fase) badges.push(badge(`Fase: ${card.fase}`, "warn"));
-
-  document.getElementById("ucBadges").innerHTML = badges.join("");
+  if (card?.data?.fase) badges.push(badge(`Fase: ${card.data.fase}`, "warn"));
+  if (Array.isArray(card?.data?.trilhas) && card.data.trilhas.length) {
+    badges.push(badge(`Trilhas: ${card.data.trilhas.length}`, "user"));
+  }
+  const ucBadges = document.getElementById("ucBadges");
+  if (ucBadges) ucBadges.innerHTML = badges.join("");
 
   const extra = [];
   if (!card) {
-    extra.push("Seu card ainda não foi vinculado. Peça ao admin para associar seu UID.");
+    extra.push("Seu card ainda não foi vinculado. Peça ao admin para preencher seu UID no Kanban (cards_usuarios.uid).");
   } else {
-    if (card.obs) extra.push(`<b>Obs:</b> ${esc(card.obs)}`);
-    if (Array.isArray(card.trilhas) && card.trilhas.length) {
-      extra.push(`<b>Trilhas:</b> ${card.trilhas.map(esc).join(", ")}`);
+    if (card.data.obs) extra.push(`<b>Obs:</b> ${esc(card.data.obs)}`);
+    if (Array.isArray(card.data.trilhas) && card.data.trilhas.length) {
+      extra.push(`<b>Trilhas:</b> ${card.data.trilhas.map(esc).join(", ")}`);
     }
   }
-  document.getElementById("ucExtra").innerHTML = extra.join("<br>");
+  const ucExtra = document.getElementById("ucExtra");
+  if (ucExtra) ucExtra.innerHTML = extra.length ? extra.join("<br/>") : "";
 
-  // Botões do card
+  // locks nos botões do card
   const btnAdmin = document.getElementById("btnGoAdmin");
   const btnServ  = document.getElementById("btnGoServices");
+  const lockAdmin = document.getElementById("lockAdmin");
+  const lockServ  = document.getElementById("lockServices");
 
-  setLocked(btnAdmin, !isAdmin);
-  setLocked(btnServ, !isTech);
+  const adminLocked = !isAdmin;
+  const servLocked  = !isTech;
 
-  document.getElementById("lockAdmin").innerHTML =
-    isAdmin ? '<i class="fa-solid fa-lock-open"></i>' : '<i class="fa-solid fa-lock"></i>';
+  setLocked(btnAdmin, adminLocked);
+  setLocked(btnServ, servLocked);
 
-  document.getElementById("lockServices").innerHTML =
-    isTech ? '<i class="fa-solid fa-lock-open"></i>' : '<i class="fa-solid fa-lock"></i>';
+  if (lockAdmin) lockAdmin.innerHTML = adminLocked ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-lock-open"></i>';
+  if (lockServ)  lockServ.innerHTML  = servLocked  ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-lock-open"></i>';
 
+  // aplica travas em tudo com data-requires
   applyLocksToMenu({ isAdmin, isTech });
 
   wrap.classList.remove("hidden");
@@ -163,14 +179,14 @@ async function showUserCard(user){
 }
 
 /* ===============================
-   Auth state listener
+   Auth state
 ================================ */
-auth?.onAuthStateChanged(async (user) => {
-  if (!user) {
+auth?.onAuthStateChanged(async (u) => {
+  if (!u) {
     btnLogin?.classList.remove("hidden");
     btnLogout?.classList.add("hidden");
 
-    applyLocksToMenu({ isAdmin:false, isTech:false });
+    applyLocksToMenu({ isAdmin: false, isTech: false });
     setColetasLinks(false);
 
     document.getElementById("userCardWrap")?.classList.add("hidden");
@@ -180,7 +196,7 @@ auth?.onAuthStateChanged(async (user) => {
   btnLogin?.classList.add("hidden");
   btnLogout?.classList.remove("hidden");
 
-  await showUserCard(user);
+  await showUserCard(u);
 });
 
 /* ===============================
@@ -200,8 +216,7 @@ document.querySelectorAll(".circleWrap .node").forEach((node) => {
     const r = node.getBoundingClientRect();
     const dx = (e.clientX - (r.left + r.width / 2)) / r.width;
     const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
-    node.style.transform =
-      `translate(-50%,-50%) scale(1.07) translate(${dx * 6}px, ${dy * 6}px)`;
+    node.style.transform = `translate(-50%,-50%) scale(1.07) translate(${dx * 6}px, ${dy * 6}px)`;
   });
   node.addEventListener("mouseleave", () => {
     node.style.transform = "translate(-50%,-50%)";

@@ -9,7 +9,7 @@ const firebaseConfig = {
   appId: "1:567018725607:web:2f5e43e836c827d2428242"
 };
 
-window.initFirebaseCompat = function initFirebaseCompat(){
+window.initFirebaseCompat = function initFirebaseCompat() {
   if (!window.firebase) {
     console.warn("Firebase não carregou (scripts CDN).");
     return null;

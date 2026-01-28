@@ -39,8 +39,7 @@ export function applyThemeInit() {
   applyTheme(saved === "light" || saved === "dark" ? saved : "dark");
 
   btnTheme?.addEventListener("click", () => {
-    const current =
-      document.documentElement.getAttribute("data-theme") || "dark";
+    const current = document.documentElement.getAttribute("data-theme") || "dark";
     applyTheme(current === "dark" ? "light" : "dark");
   });
 }
@@ -100,4 +99,73 @@ export function applyLocksToMenu({ isAdmin = false, isTech = false }) {
         : '<i class="fa-solid fa-lock-open"></i>';
     }
   });
+}
+
+/* ===============================
+   Guards (roteamento protegido)
+================================ */
+export function getFirebaseCompat() {
+  const fb = window.initFirebaseCompat?.();
+  if (!fb?.auth || !fb?.db) return null;
+  return fb;
+}
+
+export function redirectToLogin(next = "") {
+  const url = next ? `login.html?next=${encodeURIComponent(next)}` : "login.html";
+  window.location.replace(url);
+}
+
+export async function requireAuth({ next = "" } = {}) {
+  const fb = getFirebaseCompat();
+  if (!fb) {
+    console.warn("Firebase não inicializou para requireAuth().");
+    redirectToLogin(next);
+    return null;
+  }
+
+  return await new Promise((resolve) => {
+    fb.auth.onAuthStateChanged((u) => {
+      if (!u) {
+        redirectToLogin(next);
+        resolve(null);
+        return;
+      }
+      resolve({ user: u, auth: fb.auth, db: fb.db });
+    });
+  });
+}
+
+export async function requireRole({ role, next = "" } = {}) {
+  const session = await requireAuth({ next });
+  if (!session) return null;
+
+  const { user, db } = session;
+
+  try {
+    if (role === "admin") {
+      const doc = await db.collection("admins").doc(user.uid).get();
+      const ok = doc.exists && doc.data()?.active === true;
+      if (!ok) {
+        window.location.replace("index.html");
+        return null;
+      }
+      return session;
+    }
+
+    if (role === "tech") {
+      const doc = await db.collection("tecnicos").doc(user.uid).get();
+      const ok = doc.exists && doc.data()?.active === true;
+      if (!ok) {
+        window.location.replace("index.html");
+        return null;
+      }
+      return session;
+    }
+
+    return session;
+  } catch (e) {
+    console.error("requireRole error:", e);
+    window.location.replace("index.html");
+    return null;
+  }
 }
